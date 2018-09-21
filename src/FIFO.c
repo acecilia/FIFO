@@ -84,6 +84,13 @@ bool fifo_add(fifo_t fifo, const void * item)
 	}
 }
 
+void fifo_add_despite_full(fifo_t fifo, const void * item)
+{
+	while (!fifo_add(fifo, item)) {
+		fifo_discard(fifo, 1, E_FIFO_FRONT);
+	}
+}
+
 bool fifo_get(fifo_t fifo, void * item)
 {
 	if (!fifo_is_empty(fifo)) {

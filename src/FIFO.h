@@ -155,6 +155,16 @@ extern "C" {
 	bool fifo_add(fifo_t fifo, const void * item);
 
 	/**
+	 * @brief Adds one item to the FIFO buffer. If it is full, removes an item from
+	 * the fifo buffer front in order to make space for the new item.
+	 *
+	 * @param fifo Pointer to a fifo_descriptor structure.
+	 * @param item Pointer to a location that holds data to be written to the fifo
+	 * buffer.
+	 */
+	void fifo_add_despite_full(fifo_t fifo, const void * item);
+
+	/**
 	 * @brief Obtains one item from the FIFO buffer.
 	 *
 	 * This function reads an item from the fifo buffer front. This function affects

@@ -40,7 +40,6 @@ void test_FIFO_addMoreThanSize(void) {
 	TEST_ASSERT(failed == overflowAmount);
 }
 
-
 void test_FIFO_addAndGet(void) {
 	unsigned int fifoSize = 10;
 	fifo_t myfifo = fifo_create(fifoSize, sizeof(int));
@@ -58,4 +57,24 @@ void test_FIFO_addAndGet(void) {
 	}
 
 	TEST_ASSERT(expectedValue == fifoSize);
+}
+
+void test_FIFO_addDespiteFullAndGet(void) {
+	unsigned int fifoSize = 10;
+	unsigned int overflowAmount = 3;
+	fifo_t myfifo = fifo_create(fifoSize, sizeof(int));
+
+	for (int i = 0; i < fifoSize + overflowAmount; i++) {
+		fifo_add_despite_full(myfifo, &i);
+	}
+
+	int expectedValue = overflowAmount;
+	while (!fifo_is_empty(myfifo)) {
+		int value;
+		fifo_get(myfifo, &value);
+		TEST_ASSERT(value == expectedValue);
+		expectedValue += 1;
+	}
+
+	TEST_ASSERT(expectedValue == fifoSize + overflowAmount);
 }
